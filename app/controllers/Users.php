@@ -1,6 +1,7 @@
 <?php
   class Users extends Controller {
     public function __construct(){
+      
 
       $this->userModel = $this->model('User');
       $this->publicationModel = $this->model('Publication');
@@ -277,6 +278,56 @@
         $this->view('users/profile',$data);
       }
       
+    }
+
+    public function edit($userId){
+      
+      if(!userIsLoggedIn() && !adminIsLoggedIn()){
+        $this->login();
+      }else{
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+          $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+          // die ("hello");
+        // Init data
+        $inputData =[
+          'id'=>$userId,
+          'name' => trim($_POST['name']),
+          'city' => trim($_POST['city']),
+                
+        ];
+
+        $upadtedUser = $this->userModel->updateUser($inputData);
+        if($upadtedUser){
+          redirect('users/profile/'. $userId . '?action=update');
+        }else{
+          redirect('users/profile/'. $userId . '?action=error');
+        }
+          
+        }
+
+
+          $idCheck  = '';
+           $howIsLoggedIn  =  0;
+          if(userIsLoggedIn()){
+            $idCheck = $_SESSION['user_id'];
+          }else {
+            $idCheck = $_SESSION['admin_id'];
+          }
+          $howIsLoggedIn = ($idCheck == $userId) ? 1 : 0;
+        $publications = $this->publicationModel->getMyPublications($userId);
+        foreach ($publications as $key => $publication) {
+          $publications[$key]->diffTime = $this->getTimeDifference($publication->pub_created_at);
+        }
+        $user = $this->userModel->getUserById($userId);
+        $data = [
+          "publications" => $publications,
+          "user" => $user,
+          "whoIsLoggedIn" =>$howIsLoggedIn,
+        ];
+
+      $this->view('users/edit' , $data);
+      } 
     }
     function getTimeDifference($createdAt) {
       // Convert the timestamp to a DateTime object
