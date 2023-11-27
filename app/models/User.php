@@ -68,6 +68,22 @@
       return $row;
     }
 
+    public function updateUser($data){
+      $this->db->query('UPDATE users SET name = :name, city = :city WHERE id = :id');
+      // Bind values
+      $this->db->bind(':name', $data['name']);
+      $this->db->bind(':city', $data['city']);
+      $this->db->bind(':id', $data['id']);
+      
+
+      // Execute
+      if($this->db->execute()){
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     public function getUers($id){
       $this->db->query('SELECT * FROM users where id <>:id LIMIT 5;');
       // Bind value
