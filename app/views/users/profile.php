@@ -36,7 +36,7 @@
                         <h4 class="m-t-10 m-b-5"><?php echo ucwords($data['user']->name);  ?></h4>
                         <p class="m-b-10"><?php echo ucwords($data['user']->city);  ?></p>
                         <?php if($data['whoIsLoggedIn'] === 1) { ?>
-                        <a href="#" class="btn btn-sm btn-info mb-2">Edit Profile</a>
+                        <a href="<?php echo URLROOT . "/users/edit/" . $data['user']->id; ?>" class="btn btn-sm btn-info mb-2">Edit Profile</a>
                         <?php } ?>
                      </div>
                      <!-- END profile-header-info -->
@@ -44,8 +44,8 @@
                   <!-- END profile-header-content -->
                   <!-- BEGIN profile-header-tab -->
                   <ul class="profile-header-tab nav nav-tabs">
-                     <li class="nav-item"><a href="#post"  class="nav-link_" onclick="pagination(1)">POSTS</a></li>
-                     <li class="nav-item"><a href="#about"  class="nav-link_" onclick="pagination(2)">ABOUT</a></li>
+                     <li class="nav-item"><a href=""  class="nav-link_" onclick="pagination(1)">POSTS</a></li>
+                     <li class="nav-item"><a href="#"  class="nav-link_" onclick="pagination(2)">ABOUT</a></li>
                   </ul>
                   <!-- END profile-header-tab -->
                </div>
